@@ -1,0 +1,113 @@
+<?php
+
+namespace Gate2Bundle\Entity;
+
+/**
+ * Person2
+ */
+class Person2
+{
+    /**
+     * @var int
+     */
+    private $id;
+
+    /**
+     * @var string
+     */
+   
+    private $name;
+
+    /**
+     * @var int
+     */
+    private $intage;
+
+    /**
+     * @var string
+     */
+    private $team;
+
+
+    /**
+     * Get id
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set name
+     *
+     * @param string $name
+     *
+     * @return Person2
+     */
+    public function setName($name)
+    {
+        $this->name = $name;
+
+        return $this;
+    }
+
+    /**
+     * Get name
+     *
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->name;
+    }
+
+    /**
+     * Set intage
+     *
+     * @param integer $intage
+     *
+     * @return Person2
+     */
+    public function setIntage($intage)
+    {
+        $this->intage = $intage;
+
+        return $this;
+    }
+
+    /**
+     * Get intage
+     *
+     * @return int
+     */
+    public function getIntage()
+    {
+        return $this->intage;
+    }
+
+    /**
+     * Set team
+     *
+     * @param string $team
+     *
+     * @return Person2
+     */
+    public function setTeam($team)
+    {
+        $this->team = $team;
+
+        return $this;
+    }
+
+    /**
+     * Get team
+     *
+     * @return string
+     */
+    public function getTeam()
+    {
+        return $this->team;
+    }
+}

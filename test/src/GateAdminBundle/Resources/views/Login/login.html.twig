@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Prisijungimas {% endblock %}
+
+{% block body  %}
+
+    <div id = 'LabelStyle'> 
+    <h1>Administratoriaus Prisijungimas</h1>
+    </div>
+    <div class = "container" id ='TestStyle' >
+    
+        {{ form_start(ourform, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+            {{ form_errors(ourform)}}
+            
+       <div class = "form-group" id = 'FieldStyle' >
+           
+         {{ form_label(ourform.name) }}
+         {{ form_errors(ourform.name) }}
+         <div class = "col-xs-8 " id = 'InputField'>
+         {{ form_widget(ourform.name) }}
+         </div>
+       </div>
+         
+         <div class = "form-group" id = 'FieldStyle'>
+         {{ form_label(ourform.password) }}
+         {{ form_errors(ourform.password) }}
+          <div class = "col-xs-8" id = 'InputField'>
+         {{ form_widget(ourform.password) }}
+          </div>
+            
+       </div>
+     {% if validUser is defined %}
+       <div style ="padding: 5px; color: red" align="center"> Neteisingas vardas ir/arba slaptažodis </div>
+       {% endif %}
+         <div class = "form-group" id = "LoginButt">
+            <div id = 'divone'>
+        {{ form_widget(ourform.save) }}
+            </div>
+            <div id = 'divtwo'>
+     <!--  <a data-toggle="modal" href="{{path('gate_admin_remind')}}" class="btn btn-default">Priminti</a> -->
+           <button type="button" class="btn btn-default" data-toggle="modal" data-target="#remindModal">Priminti slaptažodį</button>
+            </div>
+       </div>
+         
+          {{ form_end(ourform) }}
+    </div>
+        
+           <div class="modal fade" id="remindModal" role="dialog">
+    <div class="modal-dialog"  style = " width: 600px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Siųsti Priminimą</h4>
+        </div>
+        <div class="modal-body" style="height: 150px;">
+           <div class = "container"  >
+    
+        {{ form_start(remindform) }}
+            {{ form_errors(remindform)}}
+            
+       <div class = "form-group"  >
+           
+         {{ form_label(remindform.name) }}
+         {{ form_errors(remindform.name) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(remindform.name) }}
+         </div>
+       </div>
+         
+       
+        
+         <div class = "form-group" >
+            <div >
+        {{ form_widget(remindform.save) }}
+            </div>
+         
+       </div>
+        
+          {{ form_end(remindform) }}
+    </div>
+     {% if remindValid is defined %}
+     {% if remindValid == false %}
+      <div style ="padding: 5px; color: red" align="center"> Toks paštas neegzistuoja </div>
+     {% endif %}
+     {% endif %}
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Uždaryti</button>
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  
+          
+          
+          
+          
+          
+{% endblock %}
+
+{% block javascripts %}
+     <script src="{{ asset('js/RemindValid.js') }}"></script>
+    
+    
+     {% if remindValid is defined %}
+     {% if remindValid == false %}
+       <script>CheckRemind()</script>
+     {% endif %}
+     {% endif %}
+{% endblock %} 

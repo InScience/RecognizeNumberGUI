@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="GateAdminBundle\Entity\Owner" table="owner" repository-class="GateAdminBundle\Repository\OwnerRepository">
+    <unique-constraints>
+      <unique-constraint name="UNIQ_CF60E67CE85E83E4" columns="phoneNumber"/>
+      <unique-constraint name="UNIQ_CF60E67CE65E09C0" columns="aID"/>
+    </unique-constraints>
+    <id name="did" type="integer" column="dID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="aid" type="integer" column="aID" nullable="true">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <field name="name" type="string" column="name" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="surname" type="string" column="surname" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="phonenumber" type="string" column="phoneNumber" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="adress" type="string" column="adress" length="255" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="regdate" type="datetime" column="regDate" nullable="true"/>
+    <field name="showowner" type="integer" column="showowner" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+  </entity>
+</doctrine-mapping>

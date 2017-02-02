@@ -1,0 +1,43 @@
+gate_admin_homepage:
+    path:     /index/{page}
+    defaults: { _controller: GateAdminBundle:Event:index }
+    
+gate_admin_PersonList:
+    path:     /PersonList/{page}
+    defaults: { _controller: GateAdminBundle:Owner:PersonList }
+    
+gate_admin_AdminList:
+    path:     /AdminList/{page}
+    defaults: { _controller: GateAdminBundle:Default:AdminList }
+    
+gate_admin_AdminListdefault:
+    path:     /AdminList
+    defaults: { _controller: GateAdminBundle:Default:AdminListdefault }    
+    
+gate_admin_VehicleList:
+    path:     /VehicleList/{page}
+    defaults: { _controller: GateAdminBundle:Vehicle:VehicleList }
+
+gate_admin_testloginpage:
+    path:     /login
+    defaults: { _controller: GateAdminBundle:Login:login }
+    
+gate_admin_logout:
+    path:     /logout
+    defaults: { _controller: GateAdminBundle:Login:logout }
+    
+gate_admin_remind:
+    path:     /remind
+    defaults: { _controller: GateAdminBundle:Login:remind }
+    
+gate_admin_personprofile:
+    path:     /personprofile/{id}/{page}
+    defaults: { _controller: GateAdminBundle:Owner:personprofile }
+    
+gate_admin_personListAddCar:
+    path:     /personAddVehicle/{id}
+    defaults: { _controller: GateAdminBundle:Default:personListAddCar }
+       
+gate_admin_personprofile1:
+    path:     /personprofile
+    defaults: { _controller: GateAdminBundle:Default:personprofile1 }

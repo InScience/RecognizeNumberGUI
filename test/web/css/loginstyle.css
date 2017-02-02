@@ -1,0 +1,61 @@
+#TestStyle { 
+    background-color:#eeeeee;	
+    position:fixed;
+    top: 50%;
+    left: 50%;
+    width:35em;
+    height:20em;
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+    border: 1px solid #ccc;
+    padding:10px;
+}
+
+#LabelStyle {  
+    position:fixed;
+    top: 35%;
+    left: 50%;
+   
+    margin-top: -9em; /*set to a negative number 1/2 of your height*/
+    margin-left: -15em; /*set to a negative number 1/2 of your width*/
+  
+    
+}
+
+#FieldStyle {
+ padding:10px;
+    
+    
+    
+}
+
+#InputField {
+ padding:0px;
+ margin-right: -0px;   
+ left: 10%;
+ right: 20%;   
+}
+
+#LoginButt{
+ margin-left: 10%;   
+    
+    
+}
+
+#RemindButt{
+ left: 40%;   
+ padding:50px; 
+    
+}
+
+
+#divone {
+  width: 50%;
+  float: left;
+}
+
+#divtwo {
+  margin-left: 50%;
+  
+}
+

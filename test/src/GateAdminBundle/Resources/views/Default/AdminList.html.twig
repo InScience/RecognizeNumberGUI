@@ -1,0 +1,96 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Prisijungimas {% endblock %}
+
+{% block body  %}
+    
+<div >
+  
+<nav>
+    <div id = 'divleft' >
+    
+    </div>
+    <div id = 'divright'>
+    hi {{Admin.name}}
+    hi {{Admin.aID}}
+    hi {{Admin.password}}
+<a href="{{path('gate_admin_logout')}}" class="btn btn-default">Logout</a>
+</div>
+</nav>
+
+<main>
+     {{ form_start(VehOwnerForm, {'attr': {'class': 'form-horizontal'}}) }}
+     {{ form_label(VehOwnerForm.owners) }}
+         {{ form_errors(VehOwnerForm.owners) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(VehOwnerForm.owners) }}
+         </div>
+     
+       <button type="button" class="btn btn-default" onclick="CheckSelectedOwner()"  ><i ></i></button>
+     {{ form_end(VehOwnerForm) }}
+    
+    
+    
+    <h1>Sąrašas</h1>
+    {{ form_start(CheckForm, {'attr': {'class': 'form-horizontal'}}) }}
+    <table class="table table-striped">
+  <tr>
+    <th>id</th>
+    <th>vardas</th>
+    <th>email</th>
+     <th></th>
+    
+  </tr>
+   
+   {% for admin in People %} 
+  <tr>
+    <td>{{admin.aID}}</td>
+    <td>{{admin.name}}</td>
+    <td>{{admin.email}}</td>
+    <td> {{ form_widget(attribute(CheckForm, admin.aID)) }} </td>
+     
+    </tr>
+ {% endfor %}
+    </table>
+    
+      {{ form_end(CheckForm) }}
+    
+    
+</main>
+
+    {% if maxPages > 1 %}
+<ul class="pagination pagination-sm">
+    {# `«` arrow  #}
+    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_AdminList', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    </li>
+
+    {# Render each page number #}
+    {% for i in 1..maxPages %}
+    <li {{ thisPage == i ? 'class="active"' }}>
+    <a href="{{ path('gate_admin_AdminList', {page: i}) }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    {# `»` arrow #}
+    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_AdminList', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+    </li>
+</ul>
+{% endif %}
+    
+    
+    
+    
+<footer></footer>
+
+
+
+ 
+{% endblock %}
+
+
+{% block javascripts %}
+
+<script src="{{ asset('js/SelectedOwner.js') }}"></script>
+{% endblock %} 

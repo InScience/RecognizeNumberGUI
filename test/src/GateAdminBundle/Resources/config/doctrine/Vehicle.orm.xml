@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="GateAdminBundle\Entity\Vehicle" table="vehicle" repository-class="GateAdminBundle\Repository\VehicleRepository">
+    <indexes>
+      <index name="did" columns="dID"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="UNIQ_1B80E486C440BCF5" columns="licenseNum"/>
+    </unique-constraints>
+    <id name="vid" type="integer" column="vID">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="licensenum" type="string" column="licenseNum" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="brand" type="string" column="brand" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="model" type="string" column="model" length="50" nullable="false">
+      <options>
+        <option name="fixed"/>
+      </options>
+    </field>
+    <field name="showveh" type="integer" column="showveh" nullable="false">
+      <options>
+        <option name="unsigned"/>
+      </options>
+    </field>
+    <many-to-one field="did" target-entity="Owner" fetch="LAZY">
+      <join-columns>
+        <join-column name="dID" referenced-column-name="dID" on-delete="CASCADE" on-update="CASCADE"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

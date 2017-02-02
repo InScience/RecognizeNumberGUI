@@ -1,0 +1,3 @@
+function Alert(p1){
+window.alert(p1);
+}

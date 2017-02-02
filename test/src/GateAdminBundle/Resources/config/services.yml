@@ -1,0 +1,4 @@
+services:
+#    gate_admin.example:
+#        class: GateAdminBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

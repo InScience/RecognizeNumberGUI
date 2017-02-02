@@ -1,0 +1,366 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Prisijungimas {% endblock %}
+
+{% block body  %}   
+<div >
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<nav>
+ 
+    <div id = 'divleft' >
+     <ul class="nav nav-pills">
+  <li role="presentation"><a href="{{path('gate_admin_homepage', {page: 1})}}">Įvykiai</a></li>
+  <li role="presentation" class="active"><a href="">Asmenys</a></li>
+  <li role="presentation"><a href="{{path('gate_admin_VehicleList', {page: 1})}}">Automobiliai</a></li>
+</ul>
+    </div>
+    <div id = 'divright'>
+    Dabar prisijungęs: {{Admin.name}}
+  
+   
+<a href="{{path('gate_admin_logout')}}" class="btn btn-default">Atsijungti</a>
+</div>
+</nav>
+
+<main>
+   {{ form_start(CheckForm, {'attr': {'class': 'form-horizontal'}}) }}
+    <h1>Registruotų asmenų sąrašas</h1>
+    <div style ="display: flex; float: right; " >
+ 
+    <div  class="txt" style="display:none;">
+     <button  type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteCheckPerson">Ištrinti</button>     
+    </div>
+        
+    <div >
+         <button  type="button" class="btn btn-default" data-toggle="modal" data-target="#addPerson">Naujas</button>
+    </div>
+   </div>
+    <table class="table table-striped">
+  <tr>
+    <th>Vardas</th>
+    <th>Tel. numeris</th>
+    <th >Adresas</th>
+    <th class= "col-sm-2" ></th>
+    <th > 
+    
+       
+    
+    </th>
+  </tr>
+  
+   {% for person in People %} 
+  <tr>
+    <td>{{person.name}} {{person.surname}}</td>
+    <td>{{person.phoneNumber}}</td>
+    <td>{{person.adress}}</td>
+    <td >
+  
+         <div class="col-xs-1 col-sm-offset-1">  
+        
+        <a style ="color: black" href="{{ path('gate_admin_personprofile', {id: person.dID, 'page': 1 } ) }}">       <button type="button"  class="btn" > <i class="fa fa-car"></i></button>                      </a>        
+      
+             </div>               
+          <div class="col-xs-1 col-sm-offset-1">  
+      <button type="button" class="btn" onclick="filleditFields(vardas = '{{ person.name }}', pavarde = '{{ person.surname }}', tel = '{{ person.phoneNumber }}', adresas = '{{ person.adress }}', id = '{{ person.dID }}')"  ><i class="glyphicon glyphicon-pencil"></i></button>
+          </div>                  
+          <div class="col-xs-1 col-sm-offset-1">               
+      <button type="button" class="btn" onclick="filldeleteField(id = {{ person.dID }})"  ><i class="glyphicon glyphicon-remove"></i></button>
+          </div>
+              
+    </td>
+        <td>   {{ form_widget(attribute(CheckForm, person.dID), {'attr': {'class': 'Checky'}})  }}  </td>
+    </tr>
+ {% endfor %}
+ 
+    </table>
+    
+    
+    <div class="modal fade" id="deleteCheckPerson" role="dialog">
+    <div class="modal-dialog"  style = " width: 400px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align: center;">Ar tikrai norite ištrinti pažymėtus įrašus?</h4>
+        </div>
+        <div class="modal-body" style="height: 100px;">
+    
+          
+    
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+          {{ form_widget(CheckForm.submit, {'attr': {'class': 'btn btn-default'}}) }}  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;">Atšaukti</button>
+            
+     </div>  </div> </div>   
+     </div></div></div></div> 
+ 
+   {{ form_end(CheckForm) }}
+   
+   
+   
+      <div style=" margin: auto;  width: 30%; " >
+     {% if maxPages > 1 %}
+<ul class="pagination pagination-sm">
+    {# `«` arrow  #}
+    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_PersonList', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    </li>
+
+    {# Render each page number #}
+    {% for i in 1..maxPages %}
+    <li {{ thisPage == i ? 'class="active"' }}>
+    <a href="{{ path('gate_admin_PersonList', {page: i}) }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    {# `»` arrow #}
+    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_PersonList', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+    </li>
+</ul>
+{% endif %}
+    </div>
+</main>
+
+  
+    
+<footer></footer>
+
+</div>
+       
+    <div class="modal fade" id="addPerson" role="dialog">
+    <div class="modal-dialog " style = " width: 400px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Naujas įrašas</h4>
+        </div>
+        <div class="modal-body" style="height: 400px;">
+    
+    
+        {{ form_start(newPersonForm, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+            {{ form_errors(newPersonForm)}}
+            
+       <div class = "form-group"  >
+          <div style="color:red">
+         {{ form_errors(newPersonForm.name) }}
+         </div>
+           
+         {{ form_label(newPersonForm.name) }}
+        
+         <div class = "col-xs-5 " >
+         {{ form_widget(newPersonForm.name) }}
+         </div>
+      
+         
+         
+       </div>
+          <div class = "form-group"  >
+         <div style="color:red">
+         {{ form_errors(newPersonForm.surname) }}
+         </div>
+         {{ form_label(newPersonForm.surname) }}
+        
+         <div class = "col-xs-5 " >
+         {{ form_widget(newPersonForm.surname) }}
+         </div>
+        
+         
+       </div>
+          <div class = "form-group"  >
+             <div style="color:red">
+           {{ form_errors(newPersonForm.phonenumber) }}
+         </div>
+         {{ form_label(newPersonForm.phonenumber) }}
+        
+         <div class = "col-xs-5 " >
+         {{ form_widget(newPersonForm.phonenumber) }}
+         </div>
+        
+       </div>
+        <div class = "form-group"  >
+           <div style="color:red">
+          {{ form_errors(newPersonForm.adress) }}
+          </div>
+         {{ form_label(newPersonForm.adress) }}
+       
+         <div class = "col-xs-5 " >
+         {{ form_widget(newPersonForm.adress) }}
+         </div>
+          
+       </div>
+        
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+        {{ form_widget(newPersonForm.save, {'attr': {'label': 'Išsaugoti'}}) }}  
+         <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;">Atšaukti</button>
+         
+       </div>
+         </div>
+          {{ form_end(newPersonForm) }}
+  
+        </div>
+        <div class="modal-footer">
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
+          
+   <div class="modal fade" id="deletePerson" role="dialog">
+    <div class="modal-dialog" style = " width: 400px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align: center;">Ar tikrai norite ištrinti įrašą?</h4>
+        </div>
+        <div class="modal-body" style="height: 100px;">
+    
+        {{ form_start(DeletePersonForm, {'attr': {'class': 'form-horizontal'}}) }}
+            {{ form_errors(DeletePersonForm)}}
+            
+       <div class = "form-group"  >
+           
+        
+         {{ form_errors(DeletePersonForm.did) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(DeletePersonForm.did) }}
+         </div>
+       </div>
+   
+   
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+        {{ form_widget(DeletePersonForm.save) }}  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;">Atšaukti</button>
+        
+         
+       </div>
+         </div>
+          {{ form_end(DeletePersonForm) }}
+  
+        </div>
+         
+       
+        
+     
+      </div>
+      
+    </div>
+  </div>
+  </div>       
+          
+    <div class="modal fade" id="editPerson" role="dialog">
+    <div class="modal-dialog " style = " width: 400px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Įrašo redagavimas</h4>
+        </div>
+        <div class="modal-body" style="height: 450px; ">
+    
+    
+        {{ form_start(EditPersonForm, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+            {{ form_errors(EditPersonForm)}}
+            
+       <div class = "form-group"  >
+        <div style="color:red">
+         {{ form_errors(EditPersonForm.name) }}
+        </div>
+         {{ form_label(EditPersonForm.name) }}
+        
+         <div class = "col-xs-5 " >
+         {{ form_widget(EditPersonForm.name) }}
+         </div>
+        
+       </div>
+          <div class = "form-group"  >
+          <div style="color:red">
+          {{ form_errors(EditPersonForm.surname) }}
+          </div>
+         {{ form_label(EditPersonForm.surname) }}
+        
+         <div class = "col-xs-5 " >
+         {{ form_widget(EditPersonForm.surname) }}
+         </div>
+       
+       </div>
+          <div class = "form-group"  >
+        <div style="color:red">
+         {{ form_errors(EditPersonForm.phonenumber) }} 
+        </div>
+         {{ form_label(EditPersonForm.phonenumber) }}
+      
+         <div class = "col-xs-5 " >
+         {{ form_widget(EditPersonForm.phonenumber) }}
+         </div>
+         
+       </div>
+        <div class = "form-group"  >
+            <div style="color:red">
+           {{ form_errors(EditPersonForm.adress) }} 
+           </div>
+         {{ form_label(EditPersonForm.adress) }}
+      
+         <div class = "col-xs-5 " >
+         {{ form_widget(EditPersonForm.adress) }}
+         </div>
+        
+       </div>
+        
+         <div class = "form-group"  >
+           
+         {{ form_label(EditPersonForm.did) }}
+         {{ form_errors(EditPersonForm.did) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(EditPersonForm.did) }}
+         </div>
+       </div>
+         
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+        {{ form_widget(EditPersonForm.save) }}
+         <button type="button" class="btn btn-default" data-dismiss="modal" style="  margin-left: 50%;">Atšaukti</button>
+         
+       </div>
+         </div>
+          {{ form_end(EditPersonForm) }}
+  
+        </div>
+        <div class="modal-footer">
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>    
+          
+{% endblock %}
+
+
+{% block javascripts %}
+<script src="{{ asset('js/deleteperson.js') }}"></script>
+<script src="{{ asset('js/editPerson.js') }}"></script>
+<script src="{{ asset('js/example.js') }}"></script>
+<script src="{{ asset('js/Check.js') }}"></script>
+<script src="{{ asset('js/Hello.js') }}"></script>
+<script src="{{ asset('js/AddPersonValid.js') }}"></script>
+<script src="{{ asset('js/EditPersonValid.js') }}"></script>
+{% if addpersonValid == false %}
+   <script>helloWorld(" totally not valid person")</script>
+   <script>CheckAddPerson()</script>
+{% endif %}
+    {% if editpersonValid == false %}
+   <script>helloWorld(" error when editing")</script>
+   <script>CheckEditPerson()</script>
+{% endif %}
+{% endblock %} 

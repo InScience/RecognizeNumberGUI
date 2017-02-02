@@ -1,0 +1,398 @@
+
+{% extends 'base.html.twig' %}
+{% block title %} Prisijungimas {% endblock %}
+
+{% block body  %}
+    
+<div >
+  
+<nav>
+    <div id = 'divleft' >
+     <ul class="nav nav-pills">
+  <li role="presentation"><a href="{{path('gate_admin_homepage', {page: 1})}}">Įvykiai</a></li>
+  <li role="presentation"><a href="{{path('gate_admin_PersonList', {page: 1})}}">Asmenys</a></li>
+  <li role="presentation" class="active"><a href="">Automobiliai</a></li>
+</ul>
+    </div>
+    <div id = 'divright'>
+   Dabar prisijungęs: {{Admin.name}}
+<a href="{{path('gate_admin_logout')}}" class="btn btn-default">Atsijungti</a>
+</div>
+</nav>
+
+<main>
+    {{ form_start(CheckForm, {'attr': {'class': 'form-horizontal'}}) }}
+    <h1>Registruotų automobilių sąrašas</h1>
+    <div style ="display: flex; float: right; " >
+        
+     <div  class="txt" style="display:none;">
+     <button  type="button" class="btn btn-default" data-toggle="modal" data-target="#deleteCheckPerson">Ištrinti</button>     
+    </div>
+             
+        <div>
+     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#addVehicle" style ="display: flex; float: right; ">Naujas</button>
+        </div>
+        </div>
+    
+    
+     <table class="table table-striped">
+  <tr>
+    <th>Numeris</th>
+    <th>Savininkas</th>
+    <th>Markė</th>
+    <th>Modėlis</th>
+    <th class= "col-sm-2" ></th>
+    <th > 
+    
+       
+    
+    </th>
+  </tr>
+   
+   {% for car in Cars %} 
+  <tr>
+    <td>{{car.licenseNum}}</td>
+    <td>{{car.name}} {{car.surname}}  </td>  
+    <td>{{car.brand}}</td>
+    <td>{{car.model}}</td> 
+    <td>
+       
+     <div class="col-xs-1 col-sm-offset-1">  
+          
+     <button type="button" class="btn" onclick="fillVehicleEditFields(lic = '{{ car.licenseNum }}', brand = '{{ car.brand }}', model = '{{ car.model }}',id = '{{ car.dID }}',vid = '{{ car.vID }}')"  ><i class="glyphicon glyphicon-pencil"></i></button>
+          </div> 
+        <div class="col-xs-1 col-sm-offset-1">               
+      <button type="button" class="btn" onclick="filldeleteField(id = {{ car.vID }})"  ><i class="glyphicon glyphicon-remove"></i></button>
+          </div>
+   </td>
+      <td>   {{ form_widget(attribute(CheckForm, car.vID), {'attr': {'class': 'Checky'}})  }}  </td>
+    </tr>
+ {% endfor %}
+    </table>
+    
+     <div class="modal fade" id="deleteCheckPerson" role="dialog">
+    <div class="modal-dialog" style = " width: 450px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align: center;">Ar tikrai norite ištrinti pažymėtus įrašus?</h4>
+        </div>
+        <div class="modal-body" style="height: 100px;">
+    
+          
+    
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+          {{ form_widget(CheckForm.submit, {'attr': {'class': 'btn btn-default'}}) }}  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;">Atšaukti</button>
+            
+     </div>  </div> </div>   
+     </div></div></div></div> 
+ 
+   {{ form_end(CheckForm) }}
+   
+    
+    
+  <div style=" margin: auto;  width: 30%; " >
+     {% if maxPages > 1 %}
+<ul class="pagination pagination-sm">
+    {# `«` arrow  #}
+    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_VehicleList', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    </li>
+
+    {# Render each page number #}
+    {% for i in 1..maxPages %}
+    <li {{ thisPage == i ? 'class="active"' }}>
+    <a href="{{ path('gate_admin_VehicleList', {page: i}) }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    {# `»` arrow #}
+    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_VehicleList', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+    </li>
+</ul>
+{% endif %}
+    </div>   
+</main>
+
+<footer></footer>
+
+</div>
+    
+  <div class="modal fade" id="addVehicle" role="dialog">
+    <div class="modal-dialog" style = " width: 450px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Naujas įrašas</h4>
+        </div>
+        <div class="modal-body" style="height: 400px;">
+    
+       {{ form_start(newVehicleForm, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+    
+            {{ form_errors(newVehicleForm)}}
+            
+       <div class = "form-group"  >
+           <div style="color:red"> {{ form_errors(newVehicleForm.licensenum) }}</div>
+         {{ form_label(newVehicleForm.licensenum) }}
+         <div class = "col-xs-5 " >
+         {{ form_widget(newVehicleForm.licensenum) }}
+         </div>
+       </div>
+          <div class = "form-group"  >       
+        <div style="color:red"> {{ form_errors(newVehicleForm.brand) }}</div>
+          {{ form_label(newVehicleForm.brand) }}
+         <div class = "col-xs-5 " >
+         {{ form_widget(newVehicleForm.brand) }}
+         </div>
+       </div>
+          <div class = "form-group"  >
+         <div style="color:red"> {{ form_errors(newVehicleForm.model) }}</div>
+         {{ form_label(newVehicleForm.model) }}
+         <div class = "col-xs-5 " >
+         {{ form_widget(newVehicleForm.model) }}
+         </div>
+       </div>
+       <div class = "form-group"  >
+           
+         {{ form_label(newVehicleForm.did) }}
+         {{ form_errors(newVehicleForm.did) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(newVehicleForm.did) }}
+         </div>
+       </div>
+        
+       
+              <div style="display:none;">
+           {{ form_widget(newVehicleForm.save) }}
+       
+             </div>
+                 {{ form_end(newVehicleForm) }}
+             
+             {{ form_start(VehOwnerForm) }}
+           <div class = "form-group"  >
+          
+         {{ form_label(VehOwnerForm.owners) }}
+         {{ form_errors(VehOwnerForm.owners) }}
+         <div class = "col-xs-5 " >
+          {{ form_widget(VehOwnerForm.owners) }}
+         </div>
+             
+          {{ form_end(VehOwnerForm) }}
+       </div>
+              
+           <div class = "form-group" >
+         <div class = "form-group">    
+           
+        <div style="  margin-left: 10%; visibility: hidden">
+            
+         <button type="button" class="btn btn-success"  > Patvirtinti</button>
+       
+         <button type="button" class="btn btn-default" data-dismiss="modal" >Atšaukti</button>
+      
+               
+       </div>
+             
+            <div style="  margin-left: 10%;">
+            
+         <button type="button" class="btn btn-success" onclick="AddSelectedOwner()"> Patvirtinti</button>
+       
+         <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;" >Uždaryti</button>
+      
+               
+       </div>   
+             
+         </div>  
+           
+        </div>
+           
+           <div>
+        
+           </div>
+        <div class="modal-footer">
+        
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>
+          
+    <div class="modal fade" id="deleteVeh" role="dialog">
+    <div class="modal-dialog" style = " width: 400px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title" style="text-align: center;">Ar tikrai norite ištrinti įrašą?</h4>
+        </div>
+        <div class="modal-body" style="height: 100px;">
+    
+        {{ form_start(VehicleDeleteForm, {'attr': {'class': 'form-horizontal'}}) }}
+            {{ form_errors(VehicleDeleteForm)}}
+            
+       <div class = "form-group"  >
+           
+        
+         {{ form_errors(VehicleDeleteForm.vid) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(VehicleDeleteForm.vid) }}
+         </div>
+       </div>
+   
+   
+         <div class = "form-group" >
+         <div class = "form-group">
+        <div style="  margin-left: 10%;">
+        {{ form_widget(VehicleDeleteForm.save) }}  <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 50%;">Atšaukti</button>
+        
+         
+       </div>
+         </div>
+          {{ form_end(VehicleDeleteForm) }}
+  
+        </div>
+         
+       
+        
+     
+      </div>
+      
+    </div>
+  </div>
+  </div>       
+          
+          
+          
+     <div class="modal fade" id="editVehicle" role="dialog">
+    <div class="modal-dialog" style = " width: 450px;">
+           <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Įrašo redagavimas</h4>
+        </div>
+        <div class="modal-body" style="height: 400px;">
+    
+       {{ form_start(VehicleEditForm, {'attr': {'class': 'form-horizontal', 'novalidate': 'novalidate'}}) }}
+             {{ form_errors(VehicleEditForm)}}
+            
+       <div class = "form-group"  >
+         <div style="color:red"> {{ form_errors(VehicleEditForm.licensenum) }}</div>         
+         {{ form_label(VehicleEditForm.licensenum) }}    
+         <div class = "col-xs-5 " >    
+         {{ form_widget(VehicleEditForm.licensenum) }}
+         </div>
+       </div>
+     
+         
+          <div class = "form-group"  >
+          <div style="color:red"> {{ form_errors(VehicleEditForm.brand)}}   </div>
+         {{ form_label(VehicleEditForm.brand) }}
+         <div class = "col-xs-5 " >
+         {{ form_widget(VehicleEditForm.brand) }}
+         </div>
+       </div>
+             
+          <div class = "form-group"  >
+       <div style="color:red"> {{ form_errors(VehicleEditForm.model) }} </div>
+         {{ form_label(VehicleEditForm.model) }}
+         <div class = "col-xs-5 " >
+         {{ form_widget(VehicleEditForm.model) }}
+         </div>
+       </div>
+       <div class = "form-group"  >
+           
+         {{ form_label(VehicleEditForm.did) }}
+         {{ form_errors(VehicleEditForm.did) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(VehicleEditForm.did) }}
+         </div>
+       </div>
+        
+          <div class = "form-group"  >
+           
+         {{ form_label(VehicleEditForm.vid) }}
+         {{ form_errors(VehicleEditForm.vid) }}
+         <div class = "col-xs-3 " >
+         {{ form_widget(VehicleEditForm.vid) }}
+         </div>
+       </div>
+         
+         
+        
+        <div style="  display:none;">
+        {{ form_widget(VehicleEditForm.save) }}
+           {{ form_end(VehicleEditForm) }}
+ 
+       </div>
+       
+       
+        {{ form_start(VehOwnerForm1) }}
+           <div class = "form-group"  >
+          
+         {{ form_label(VehOwnerForm1.owners) }}
+         {{ form_errors(VehOwnerForm1.owners) }}
+         <div class = "col-xs-5 " >
+          {{ form_widget(VehOwnerForm1.owners) }}
+         </div>
+             
+          {{ form_end(VehOwnerForm1) }}
+       </div>
+       
+       <div style="  margin-left: 10%; visibility: hidden">
+            
+         <button type="button" class="btn btn-success"  > Patvirtinti</button>
+       
+         <button type="button" class="btn btn-default" data-dismiss="modal" >Atšaukti</button>
+      
+               
+       </div>
+       
+            <div class = "form-group" >
+         <div class = "form-group " style="margin-left: 10%;">
+             
+         <button type="button" class="btn btn-success" onclick="EditSelectedOwner()"> Patvirtinti</button>
+         <button type="button" class="btn btn-default" data-dismiss="modal" style="  margin-left: 50%;">Atšaukti</button>
+       
+       
+         </div>
+       
+        </div>
+        <div class="modal-footer">
+         
+        </div>
+      </div>
+      
+    </div>
+  </div>
+  </div>      
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/editveh.js') }}"></script>
+<script src="{{ asset('js/deleteVeh.js') }}"></script>
+<script src="{{ asset('js/example.js') }}"></script>
+<script src="{{ asset('js/Check.js') }}"></script>
+<script src="{{ asset('js/AddVehValid.js') }}"></script>
+<script src="{{ asset('js/AddSelectedOwne.js') }}"></script>
+<script src="{{ asset('js/EditSelectedOwner.js') }}"></script>
+<script src="{{ asset('js/EditVehValid.js') }}"></script>
+
+
+{% if addVehValid == false %}
+
+   <script>CheckAddVeh()</script>
+{% endif %}
+
+{% if editVehValid == false %}
+
+   <script>CheckEditVeh()</script>
+{% endif %}
+
+
+{% endblock %} 

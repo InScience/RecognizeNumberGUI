@@ -1,0 +1,91 @@
+{% extends 'base.html.twig' %}
+{% block title %} Prisijungimas {% endblock %}
+
+{% block body  %}
+    
+<div >
+  
+<nav>
+    <div id = 'divleft' >
+<ul class="nav nav-pills">
+    <li role="presentation" class="active"><a href="">Įvykiai</a></li>
+    <li role="presentation"><a href="{{path('gate_admin_PersonList', {page: 1})}}">Asmenys</a></li>
+    <li role="presentation"><a href="{{path('gate_admin_VehicleList', {page: 1})}}">Automobiliai</a></li>
+</ul>
+    </div>
+    <div id = 'divright'>
+     Dabar prisijungęs: {{Admin.name}}
+<a href="{{path('gate_admin_logout')}}" class="btn btn-default">Atsijungti</a>
+</div>
+</nav>
+
+<main>
+   
+ 
+    <h1>Sąrašas</h1>
+  
+    <table class="table table-striped">
+  <tr>
+    <th>Data</th>
+    <th>Atpažintas Numeris</th>
+    <th>Savininkas</th>
+    <th>Automobilis</th>
+  </tr>
+   
+   {% for Event in Events %} 
+  <tr>
+    <td>{{Event.date}}</td>
+    <td>{{Event.recNumber}} {#({{Event.confidence[:4]}}%)#}</td>
+    <td> {% if Event.name is null %}
+   Neatpažintas
+            {% endif %}   {{Event.name}} {{Event.surname}}</td>
+            
+    <td> {% if Event.name is null %}
+   --
+            {% endif %}  {{Event.brand}} {{Event.model}}</td>
+    </tr>
+ {% endfor %}
+    </table>
+    
+    
+    
+    
+    <div style=" margin: auto;  width: 30%; " >
+     {% if maxPages > 1 %}
+<ul class="pagination pagination-sm">
+    {# `«` arrow  #}
+    <li {{ thisPage == 1 ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_homepage', {page: thisPage-1 < 1 ? 1 : thisPage-1}) }}">«</a>
+    </li>
+
+    {# Render each page number #}
+    {% for i in 1..maxPages %}
+    <li {{ thisPage == i ? 'class="active"' }}>
+    <a href="{{ path('gate_admin_homepage', {page: i}) }}">{{ i }}</a>
+    </li>
+    {% endfor %}
+
+    {# `»` arrow #}
+    <li {{ thisPage == maxPages ? 'class="disabled"' }}>
+        <a href="{{ path('gate_admin_homepage', {page: thisPage+1 <= maxPages ? thisPage+1 : thisPage}) }}">»</a>
+    </li>
+</ul>
+{% endif %}
+    </div>
+    
+    
+</main>
+
+<footer></footer>
+
+</div>
+  
+{% endblock %}
+
+{% block javascripts %}
+<script src="{{ asset('js/example.js') }}"></script>
+<script src="{{ asset('js/Hello.js') }}"></script>
+
+<script>helloWorld("world!")</script>
+{% endblock %} 
+

@@ -1,0 +1,90 @@
+#divleft {  /* viena div i dvi dalis perskirt */
+  width: 50%;
+  float: left;
+ 
+}
+
+#divright {
+  margin-left: 50%;
+  text-align: right;
+}
+
+#divleft1 {  /* viena div i dvi dalis perskirt */
+  width: 80%;
+  float: left;
+ 
+}
+
+#divright1 {
+  margin-left: 20%;
+  text-align: right;
+}
+
+a {
+  color: black;
+  text-decoration: none; /* no underline */
+}
+
+
+nav{
+    padding: 1em;
+    color: white;
+    background-color: black;
+    clear: left;
+    text-align: center;
+}
+
+ul.nav > li > a:hover {
+    background-color: #cccccc;
+	color: white;
+	border-style: none;
+}
+
+ul.nav > li > a {
+	background-color: gray;
+	color: white;
+	border-style: none;
+}
+
+.nav-pills .open>a, .nav-pills .open>a:active, .nav-pills .open>a:focus{
+	background-color: #FF6699;
+}
+
+
+
+main{
+    padding: 3em;
+    overflow: hidden;
+    
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    margin: 0 0 100px; /* bottom = footer height */
+    padding: 0px;
+}
+
+footer {
+    background-color: orange;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 50px;
+    width: 100%;
+    overflow:hidden;
+}
+
+#searchform{
+    max-width: 10px;   
+    display: inline-block;
+    color: orange;
+    width: 5px;
+    border-style:solid;
+}
+
+.modal .modal-dialog { width: 200px; }
+

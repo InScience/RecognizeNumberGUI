@@ -1,0 +1,16 @@
+gate_admin:
+    resource: "@GateAdminBundle/Resources/config/routing.yml"
+    prefix:   /
+
+gate2:
+    resource: "@Gate2Bundle/Resources/config/routing.yml"
+    prefix:   /
+
+gate:
+    resource: "@GateBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: "@AppBundle/Controller/"
+    type:     annotation
